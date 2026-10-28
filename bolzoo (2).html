@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Урилга</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Nunito:wght@600;800&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root{
+  --bg:#FFF4DE; --ink:#231b4d; --soft:#5b5290; --yes:#ff4f7b; --yes-ink:#fff; --no:#fff; --no-ink:#231b4d;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  margin:0;height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Nunito",system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+  display:flex;overflow-y:auto;
+}
+main{width:min(100%,34rem);padding:1.25rem;margin:auto;text-align:center;position:relative;z-index:1}
+.flowers{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.f{position:absolute;height:auto}
+.emoji{font-size:4.5rem;line-height:1;display:block;margin-bottom:1rem}
+h1{
+  font-family:"Unbounded","Arial Black",system-ui,sans-serif;font-weight:800;
+  font-size:clamp(1.7rem,7vw,2.6rem);line-height:1.15;margin:0 0 .75rem;
+}
+p{margin:0 auto 2rem;max-width:30ch;font-size:1.1rem;line-height:1.5;color:var(--soft);font-weight:600}
+.row{display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;min-height:6rem}
+button{
+  font:inherit;font-weight:800;border:0;border-radius:999px;cursor:pointer;
+  padding:.9rem 1.8rem;transition:transform .15s ease;
+}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+button:active{transform:scale(.96)}
+#yes{background:var(--yes);color:var(--yes-ink);font-size:1.2rem;box-shadow:0 8px 24px rgba(255,79,123,.35)}
+#no{background:var(--no);color:var(--no-ink);font-size:1rem;box-shadow:inset 0 0 0 2px var(--soft)}
+#no[hidden]{display:none}
+.grow{transition:left .4s ease,top .4s ease,width .4s ease,height .4s ease,font-size .4s ease,border-radius .4s ease}
+.run{transition:left .3s ease,top .3s ease,font-size .3s ease}
+@media (prefers-reduced-motion:reduce){.grow,.run{transition:none}}
+#cat{display:none;width:9rem;height:auto;margin:0 auto 1rem}
+.sad #mail{display:none}
+.sad #cat{display:block}
+#cat.beg{animation:beg .5s ease}
+@keyframes beg{0%,100%{transform:rotate(0)}30%{transform:rotate(-7deg)}70%{transform:rotate(7deg)}}
+@media (prefers-reduced-motion:reduce){#cat.beg{animation:none}}
+#pick,#done{display:none}
+.step2 #ask,.step3 #ask{display:none}
+.step2 #pick{display:block}
+.step3 #pick{display:none}
+.step3 #done{display:block}
+.q{font-weight:800;margin:0 0 .6rem;font-size:1rem}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;margin:0 0 1.5rem}
+.chip{background:var(--no);color:var(--no-ink);font-size:.95rem;padding:.65rem 1.1rem;box-shadow:inset 0 0 0 2px var(--soft)}
+.chip[aria-pressed="true"]{background:var(--yes);color:var(--yes-ink);box-shadow:none}
+#go,.sendbtn{background:var(--yes);color:var(--yes-ink);font-size:1.1rem}
+.sendbtn{display:inline-block;padding:.9rem 1.8rem;border-radius:999px;font-weight:800;text-decoration:none;margin-bottom:1rem}
+.sendbtn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+#copy{background:var(--no);color:var(--no-ink);font-size:.95rem;box-shadow:inset 0 0 0 2px var(--soft)}
+.hint{max-width:30ch;margin:0 auto 1rem;font-size:.95rem;color:var(--soft);font-weight:600;line-height:1.5}
+#go:disabled{opacity:.4;cursor:not-allowed}
+.sum{font-weight:800;font-size:1.15rem;line-height:1.6;margin:0 0 1.5rem}
+.heart{position:fixed;bottom:-2rem;font-size:1.8rem;animation:rise 3.2s ease-in forwards;pointer-events:none}
+@keyframes rise{to{transform:translateY(-110vh) rotate(25deg);opacity:0}}
+@media (prefers-reduced-motion:reduce){.heart{display:none}button{transition:none}}
+</style>
+</head>
+<body>
+<div class="flowers" aria-hidden="true">
+  <svg width="0" height="0" style="position:absolute"><defs><g id="fl"><g fill="#FFCED8"><circle cx="50" cy="26" r="20"/><circle cx="74" cy="44" r="20"/><circle cx="65" cy="72" r="20"/><circle cx="35" cy="72" r="20"/><circle cx="26" cy="44" r="20"/></g><circle cx="50" cy="52" r="11" fill="#ffb3c6"/></g></defs></svg>
+  <svg class="f" viewBox="0 0 100 100" style="left:-2.5rem;top:4%;width:8rem;transform:rotate(12deg)"><use href="#fl"/></svg>
+  <svg class="f" viewBox="0 0 100 100" style="right:-3rem;top:10%;width:10rem;transform:rotate(-20deg)"><use href="#fl"/></svg>
+  <svg class="f" viewBox="0 0 100 100" style="left:38%;top:2%;width:3.5rem;transform:rotate(30deg)"><use href="#fl"/></svg>
+  <svg class="f" viewBox="0 0 100 100" style="left:4%;top:46%;width:4rem;transform:rotate(-10deg)"><use href="#fl"/></svg>
+  <svg class="f" viewBox="0 0 100 100" style="right:6%;top:54%;width:5rem;transform:rotate(18deg)"><use href="#fl"/></svg>
+  <svg class="f" viewBox="0 0 100 100" style="left:-3rem;bottom:6%;width:11rem;transform:rotate(-15deg)"><use href="#fl"/></svg>
+  <svg class="f" viewBox="0 0 100 100" style="right:-2rem;bottom:-1rem;width:9rem;transform:rotate(25deg)"><use href="#fl"/></svg>
+</div>
+<main>
+  <section id="ask">
+    <span class="emoji" id="mail" aria-hidden="true">💌</span>
+    <svg id="cat" viewBox="0 0 160 140" role="img" aria-label="Гуйж буй муур" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="28,52 36,6 72,32" fill="#f4a259"/>
+      <polygon points="132,52 124,6 88,32" fill="#f4a259"/>
+      <polygon points="38,40 41,20 56,32" fill="#ffb3c6"/>
+      <polygon points="122,40 119,20 104,32" fill="#ffb3c6"/>
+      <ellipse cx="80" cy="76" rx="58" ry="50" fill="#f4a259"/>
+      <ellipse cx="40" cy="92" rx="10" ry="6" fill="#ff8fab" opacity=".5"/>
+      <ellipse cx="120" cy="92" rx="10" ry="6" fill="#ff8fab" opacity=".5"/>
+      <circle cx="56" cy="70" r="17" fill="#231b4d"/>
+      <circle cx="104" cy="70" r="17" fill="#231b4d"/>
+      <circle cx="50" cy="63" r="7" fill="#fff"/>
+      <circle cx="98" cy="63" r="7" fill="#fff"/>
+      <circle cx="62" cy="77" r="3.5" fill="#fff"/>
+      <circle cx="110" cy="77" r="3.5" fill="#fff"/>
+      <polygon points="74,90 86,90 80,98" fill="#ff4f7b"/>
+      <path d="M80 98 Q73 107 66 102 M80 98 Q87 107 94 102" stroke="#231b4d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M30 86 L8 82 M30 94 L8 96 M130 86 L152 82 M130 94 L152 96" stroke="#231b4d" stroke-width="2" stroke-linecap="round"/>
+      <ellipse cx="66" cy="124" rx="14" ry="11" fill="#f4a259" stroke="#d9822b" stroke-width="2"/>
+      <ellipse cx="94" cy="124" rx="14" ry="11" fill="#f4a259" stroke="#d9822b" stroke-width="2"/>
+    </svg>
+    <h1>Надтай нэг кофе уух уу?</h1>
+    <p>Зүгээр нэг аяга кофе. Чамтай хамт цагийг өнгөрүүлмээр байна.</p>
+    <div class="row">
+      <button id="yes" type="button">Тиймээ</button>
+      <button id="no" type="button">Үгүй</button>
+    </div>
+  </section>
+  <section id="pick">
+    <span class="emoji" aria-hidden="true">🥳</span>
+    <h1>Мэдэж байсан!</h1>
+    <p>Одоо цаг, газраа сонгоорой.</p>
+    <div class="q">Хэзээ уулзах вэ?</div>
+    <div class="chips">
+      <button class="chip" type="button" data-g="time" aria-pressed="false">Баасан орой</button>
+      <button class="chip" type="button" data-g="time" aria-pressed="false">Бямба өдөр</button>
+      <button class="chip" type="button" data-g="time" aria-pressed="false">Ням өдөр</button>
+      <button class="chip" type="button" data-g="time" aria-pressed="false">Өөр цаг, би хэлье</button>
+    </div>
+    <div class="q">Хаана уулзах вэ?</div>
+    <div class="chips">
+      <button class="chip" type="button" data-g="place" aria-pressed="false">Кофе шоп</button>
+      <button class="chip" type="button" data-g="place" aria-pressed="false">Зоогийн газар</button>
+      <button class="chip" type="button" data-g="place" aria-pressed="false">Кино театр</button>
+      <button class="chip" type="button" data-g="place" aria-pressed="false">Алхах</button>
+    </div>
+    <button id="go" type="button" disabled>Баталгаажуулах</button>
+  </section>
+  <section id="done" aria-live="polite">
+    <span class="emoji" aria-hidden="true">🧣</span>
+    <h1>Дулаахан хувцаслаарай</h1>
+    <div class="sum" id="sum"></div>
+    <a id="send" class="sendbtn" href="https://ig.me/m/Z.Temuujin" target="_blank" rel="noopener noreferrer">Instagram-аар илгээх</a>
+    <div class="hint" id="hint">Дарахад мессеж хуулагдана. Чат нээгдэхэд paste хийгээд илгээнэ үү.</div>
+    <button id="copy" type="button">Сонголтоо хуулах</button>
+  </section>
+</main>
+<script>
+(function(){
+  var yes=document.getElementById('yes'), no=document.getElementById('no');
+  var phrases=["Үгүй","Нэг бодоорой","Үнэхээр үү?","Гуйя…","Сайн бодлоо биз?","Би хүлээж байна шүү","Сүүлчийн боломж!"];
+  var n=0, N=6, init=null;
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function step(){
+    var vw=window.innerWidth, vh=window.innerHeight;
+    if(!init){
+      var r=yes.getBoundingClientRect(), q=no.getBoundingClientRect();
+      init={l:r.left,t:r.top,w:r.width,h:r.height};
+      yes.style.cssText='position:fixed;margin:0;padding:0;z-index:5;left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;border-radius:'+(r.height/2)+'px;';
+      no.style.cssText='position:fixed;margin:0;z-index:6;padding:.9em 1.8em;left:'+q.left+'px;top:'+q.top+'px;';
+      yes.classList.add('grow'); no.classList.add('run');
+      void yes.offsetWidth;
+    }
+    var t=Math.min(1,n/N), e=Math.pow(t,1.3);
+    if(n>=N){
+      yes.style.left='0px'; yes.style.top='0px'; yes.style.width='100%'; yes.style.height='100%';
+      yes.style.borderRadius='0px'; yes.style.fontSize='56px';
+      no.hidden=true;
+      return;
+    }
+    yes.style.left=lerp(init.l,0,e)+'px';
+    yes.style.top=lerp(init.t,0,e)+'px';
+    yes.style.width=lerp(init.w,vw,e)+'px';
+    yes.style.height=lerp(init.h,vh,e)+'px';
+    yes.style.fontSize=lerp(19,56,e)+'px';
+    yes.style.borderRadius=lerp(init.h/2,0,e)+'px';
+    no.textContent=phrases[Math.min(n,phrases.length-1)];
+    no.style.fontSize=Math.max(.4,1-n*0.1)+'rem';
+    var b=no.getBoundingClientRect(), m=8;
+    no.style.left=(m+Math.random()*Math.max(0,vw-b.width-2*m))+'px';
+    no.style.top=(m+Math.random()*Math.max(0,vh-b.height-2*m))+'px';
+  }
+  no.addEventListener('click',function(){
+    n++;
+    document.body.classList.add('sad');
+    var c=document.getElementById('cat'); c.classList.remove('beg'); void c.getBoundingClientRect(); c.classList.add('beg');
+    step();
+  });
+  yes.addEventListener('click',function(){
+    document.body.classList.add('step2');
+    var h=['💖','💗','💘','💞','🌸'];
+    for(var i=0;i<28;i++){
+      var e=document.createElement('span');
+      e.className='heart';
+      e.textContent=h[i%h.length];
+      e.style.left=(Math.random()*95)+'vw';
+      e.style.animationDelay=(Math.random()*1.2)+'s';
+      document.body.appendChild(e);
+    }
+  });
+  var pick={time:null,place:null}, go=document.getElementById('go'), msg='';
+  document.querySelectorAll('.chip').forEach(function(c){
+    c.addEventListener('click',function(){
+      var g=c.getAttribute('data-g');
+      document.querySelectorAll('.chip[data-g="'+g+'"]').forEach(function(x){x.setAttribute('aria-pressed','false');});
+      c.setAttribute('aria-pressed','true');
+      pick[g]=c.textContent;
+      go.disabled=!(pick.time&&pick.place);
+    });
+  });
+  go.addEventListener('click',function(){
+    msg='Би явна! Цаг: '+pick.time+'. Газар: '+pick.place+'.';
+    var s=document.getElementById('sum');
+    s.innerHTML='';
+    ['🕒 '+pick.time,'📍 '+pick.place].forEach(function(t){
+      var d=document.createElement('div'); d.textContent=t; s.appendChild(d);
+    });
+    document.body.classList.remove('step2');
+    document.body.classList.add('step3');
+  });
+  document.getElementById('copy').addEventListener('click',function(){
+    var b=this;
+    try{
+      navigator.clipboard.writeText(msg).then(function(){b.textContent='Хуулсан ✓';},function(){b.textContent='Дэлгэцийн зургаа аваарай';});
+    }catch(e){b.textContent='Дэлгэцийн зургаа аваарай';}
+  });
+  document.getElementById('send').addEventListener('click',function(){
+    var h=document.getElementById('hint');
+    function fb(){h.textContent='Мессежийг өөрөө бичээрэй: '+msg;}
+    try{navigator.clipboard.writeText(msg).catch(fb);}catch(e){fb();}
+  });
+})();
+</script>
+</body>
+</html>
